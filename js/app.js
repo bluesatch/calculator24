@@ -25,7 +25,21 @@ class Calculator {
         // console.log(number, this.currOperand)
     }
 
-    // 2 clear
+    // 8 chooseOperation 
+    // if there is no number the operation buttons are disabled 
+    chooseOperation(operation) {
+        if (this.currOperand === '') return 
+        if (this.prevOperand !== '') {
+            this.compute()
+        }
+
+        this.operation = operation 
+        // pass this.currOperand to this.prevOperand
+        this.prevOperand = this.currOperand
+        this.currOperand = ''
+    }
+
+    // 9 clear
     clear() {
         this.prevOperand = ''
         this.currOperand = ''
@@ -58,14 +72,23 @@ class Calculator {
                 return 
         }
 
-        this.currOperand = computation 
+
+
+        // this.currOperand = computation 
+        this.currOperand = isFinite(computation) ? computation : "ERROR"
         this.operation = undefined
         this.prevOperand = ''
     }
 
-    // 3 delete
+    // 10 delete
     delete() {
-        this.currOperand = this.currOperand.toString().slice(0, -1)
+        // masterminded by Will Bridges
+        if (this.currOperand == 'ERROR') {
+            this.currOperand = ''
+        } else {
+            this.currOperand = this.currOperand.toString().slice(0, -1)
+        }
+
     }
 
     // 6 getDisplayNumber
@@ -117,23 +140,32 @@ numBtn.forEach(button => {
     button.addEventListener('click', ()=> {
         // console.log(button.innerText)
         calculator.appendNumber(button.innerText)
+        calculator.updateDisplay()
     })
 })
 
 operBtn.forEach(button => {
     button.addEventListener('click', ()=> {
-        console.log(button.innerText)
+        // console.log(button.innerText)
+        calculator.chooseOperation(button.innerText)
+        calculator.updateDisplay()
     })
 })
 
 equalBtn.addEventListener('click', ()=> {
-    console.log(equalBtn.innerText)
+    // console.log(equalBtn.innerText)
+    calculator.compute()
+    calculator.updateDisplay()
 })
 
 allClearBtn.addEventListener('click', ()=> {
-    console.log(allClearBtn.innerText)
+    // console.log(allClearBtn.innerText)
+    calculator.clear()
+    calculator.updateDisplay()
 })
 
 delBtn.addEventListener('click', ()=> {
-    console.log(delBtn.innerText)
+    // console.log(delBtn.innerText)
+    calculator.delete()
+    calculator.updateDisplay()
 })
